@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.get('/', (req, res) => {
   res.send("ClarityBoard backend is running!");
 });
-const classRoutes = require('./routes/classRoutes');
+const ClassRoutes = require('./routes/classRoutes');
 app.use('/api/classes', classRoutes);
 
 const PORT = process.env.PORT || 5000;
@@ -26,11 +26,11 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-const lectureRoutes = require('./routes/lectureRoutes');
+const LectureRoutes = require('./routes/lectureRoutes');
 app.use('/api/lectures', lectureRoutes);
 
-const feedbackRoutes = require('./routes/feedbackRoutes');
+const FeedbackRoutes = require('./routes/feedbackRoutes');
 app.use('/api/feedback', feedbackRoutes);
 
-const teacherRoutes = require('./routes/teacherRoutes');
+const TeacherRoutes = require('./routes/teacherRoutes');
 app.use('/api/teachers', teacherRoutes);
