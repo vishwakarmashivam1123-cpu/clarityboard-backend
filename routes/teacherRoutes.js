@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const Teacher = require('../models/Teacher');
+const Teacher = require('../models/teacher');
 
 // POST /api/teachers/register
 router.post('/register', async (req, res) => {

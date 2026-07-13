@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Lecture = require('../models/Lecture');
+const Lecture = require('../models/lecture');
 
 // POST /api/lectures  → create a new lecture (teacher starts a session)
 router.post('/', async (req, res) => {

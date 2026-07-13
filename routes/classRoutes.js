@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Class = require('../models/Class');
+const Class = require('../models/class');
 
 // Generate a random 6-digit code
 function generateClassCode() {

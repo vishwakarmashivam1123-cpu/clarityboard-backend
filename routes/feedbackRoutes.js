@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Feedback = require('../models/Feedback');
+const Feedback = require('../models/feedback');
 const Filter = require('bad-words');
 
 const filter = new Filter();
