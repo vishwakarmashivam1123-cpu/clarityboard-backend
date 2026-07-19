@@ -5,14 +5,15 @@ const Lecture = require('../models/lecture');
 // POST /api/lectures  → create a new lecture (teacher starts a session)
 router.post('/', async (req, res) => {
   try {
-    const { classCode, topics } = req.body;
+    const { classCode, subject, topics } = req.body;
 
-    if (!classCode || !topics || topics.length === 0) {
-      return res.status(400).json({ error: "Class code and at least one topic are required." });
+    if (!classCode || !subject || !topics || topics.length === 0) {
+      return res.status(400).json({ error: "Class code, subject, and at least one topic are required." });
     }
 
     const newLecture = new Lecture({
       classCode,
+      subject,
       topics
     });
 

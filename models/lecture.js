@@ -5,6 +5,10 @@ const lectureSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  subject: { 
+    type: String,
+    required: true
+  },
   topics: {
     type: [String],   // an array of strings, e.g. ["Recursion", "Linked Lists"]
     required: true
