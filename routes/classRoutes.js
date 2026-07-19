@@ -33,6 +33,36 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: "Something went wrong creating the class.", details: err.message });
   }
 });
+router.post('/get-or-create', async (req, res) => {
+  try {
+    const { teacherName, teacherEmail } = req.body;
+
+    if (!teacherName || !teacherEmail) {
+      return res.status(400).json({ error: "Teacher info is required." });
+    }
+
+    let existingClass = await Class.findOne({ teacherEmail });
+
+    if (existingClass) {
+      return res.json(existingClass);
+    }
+
+    const classCode = generateClassCode();
+    const newClass = new Class({
+      classCode,
+      subject: "General",
+      teacherName,
+      teacherEmail
+    });
+
+    await newClass.save();
+    res.status(201).json(newClass);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Something went wrong." });
+  }
+});
 // GET /api/classes/teacher/:email  → get all classes created by this teacher
 router.get('/teacher/:email', async (req, res) => {
   try {
