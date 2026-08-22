@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const { initializeApp, cert } = require('firebase-admin/app');
 
 const app = express();
 
@@ -10,10 +11,9 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-const admin = require('firebase-admin');
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+initializeApp({
+  credential: cert(serviceAccount)
 });
 
 mongoose.connect(process.env.MONGO_URI)

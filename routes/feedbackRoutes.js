@@ -5,7 +5,7 @@ const Filter = require('bad-words');
 
 const filter = new Filter();
 
-const admin = require('firebase-admin');
+const { getMessaging } = require('firebase-admin/messaging');
 const Teacher = require('../models/teacher');
 const Class = require('../models/class');
 // Add your own Hindi/Marathi words to the filter
@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
         const teacher = await Teacher.findOne({ email: classInfo.teacherEmail });
 
         if (teacher && teacher.fcmToken) {
-          await admin.messaging().send({
+          await agetMessaging().send({
             token: teacher.fcmToken,
             notification: {
               title: "New Feedback Received",
