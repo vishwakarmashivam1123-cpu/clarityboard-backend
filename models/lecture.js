@@ -1,10 +1,27 @@
 const mongoose = require('mongoose');
 
-const lectureSchema = new mongoose.Schema({
-  classCode: { type: String, required: true },
-  subject: { type: String, required: true },
-  topics: { type: [String], required: true },
-  lectureDate: { type: Date, default: Date.now }
+const teacherSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  fcmToken: {
+    type: String,
+    default: null
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
 });
 
-module.exports = mongoose.model('Lecture', lectureSchema);
+module.exports = mongoose.model('Teacher', teacherSchema);

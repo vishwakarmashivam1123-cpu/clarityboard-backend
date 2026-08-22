@@ -10,6 +10,13 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
+const admin = require('firebase-admin');
+const serviceAccount = require('./firebase-admin-key.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));

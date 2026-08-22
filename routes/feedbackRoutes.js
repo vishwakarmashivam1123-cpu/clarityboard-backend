@@ -4,6 +4,10 @@ const Feedback = require('../models/feedback');
 const Filter = require('bad-words');
 
 const filter = new Filter();
+
+const admin = require('firebase-admin');
+const Teacher = require('../models/teacher');
+const Class = require('../models/class');
 // Add your own Hindi/Marathi words to the filter
 filter.addWords('badword1', 'badword2'); // replace with actual words you want blocked
 
@@ -52,6 +56,27 @@ router.post('/', async (req, res) => {
 
     await newFeedback.save();
 
+    // Notification bhejo teacher ko (agar unka token save hai)
+    try {
+      const classInfo = await Class.findOne({ classCode });
+
+      if (classInfo) {
+        const teacher = await Teacher.findOne({ email: classInfo.teacherEmail });
+
+        if (teacher && teacher.fcmToken) {
+          await admin.messaging().send({
+            token: teacher.fcmToken,
+            notification: {
+              title: "New Feedback Received",
+              body: doubt ? `New doubt: "${doubt.substring(0, 60)}"` : "A student submitted new feedback."
+            }
+          });
+        }
+      }
+    } catch (notifErr) {
+      console.error("Notification error:", notifErr);
+    }
+
     res.status(201).json({ message: "Feedback submitted successfully!" });
   } catch (err) {
     console.error(err);
@@ -84,38 +109,6 @@ router.patch('/:id/resolve', async (req, res) => {
     }
 
     res.json(updated);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Something went wrong." });
-  }
-});
-
-// POST /api/classes/get-or-create — returns existing class code for this teacher, or creates one
-router.post('/get-or-create', async (req, res) => {
-  try {
-    const { teacherName, teacherEmail } = req.body;
-
-    if (!teacherName || !teacherEmail) {
-      return res.status(400).json({ error: "Teacher info is required." });
-    }
-
-    let existingClass = await Class.findOne({ teacherEmail });
-
-    if (existingClass) {
-      return res.json(existingClass);
-    }
-
-    const classCode = generateClassCode();
-    const newClass = new Class({
-      classCode,
-      subject: "General",
-      teacherName,
-      teacherEmail
-    });
-
-    await newClass.save();
-    res.status(201).json(newClass);
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Something went wrong." });

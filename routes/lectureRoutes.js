@@ -62,4 +62,22 @@ router.get('/latest/:classCode', async (req, res) => {
   }
 });
 
+// POST /api/teachers/save-fcm-token — teacher ka device token save karta hai
+router.post('/save-fcm-token', async (req, res) => {
+  try {
+    const { email, fcmToken } = req.body;
+
+    if (!email || !fcmToken) {
+      return res.status(400).json({ error: "Email and token are required." });
+    }
+
+    await Teacher.findOneAndUpdate({ email }, { fcmToken });
+
+    res.json({ message: "Token saved successfully." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Something went wrong saving the token." });
+  }
+});
+
 module.exports = router;
