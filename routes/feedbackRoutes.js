@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
         const teacher = await Teacher.findOne({ email: classInfo.teacherEmail });
 
         if (teacher && teacher.fcmToken) {
-          await agetMessaging().send({
+          await getMessaging().send({
             token: teacher.fcmToken,
             notification: {
               title: "New Feedback Received",
