@@ -14,10 +14,14 @@ const teacherSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  fcmToken: {
+    type: String,
+    default: null
+  },
   createdAt: {
     type: Date,
     default: Date.now
   }
 });
 
-module.exports = mongoose.model('Teacher', teacherSchema);
+module.exports = mongoose.models.Teacher || mongoose.model('Teacher', teacherSchema);
